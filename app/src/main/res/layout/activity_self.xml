@@ -1,0 +1,71 @@
+<!--
+    Tela simples em LinearLayout vertical (Semana 3):
+    imagem, dois botões, barra de progresso e um texto de status.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fundo"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/titulo_tela"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imgFoto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#EEEEEE"
+        android:contentDescription="@string/desc_foto"
+        android:scaleType="fitCenter" />
+
+    <Button
+        android:id="@+id/btnTirarFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_tirar_foto" />
+
+    <Button
+        android:id="@+id/btnGaleria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/self_gallery" />
+
+    <Button
+        android:id="@+id/btnEnviar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:text="@string/btn_enviar" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/status_inicial"
+        android:textIsSelectable="true"
+        android:autoLink="web"
+        android:maxLines="5"
+        android:scrollbars="vertical"
+        android:textSize="14sp" />
+
+</LinearLayout>
