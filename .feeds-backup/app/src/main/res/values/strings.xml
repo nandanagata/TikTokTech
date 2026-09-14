@@ -89,6 +89,4 @@
     <string name="msg_conta_inexistente">Conta não encontrada. Use Criar conta.</string>
     <string name="msg_conta_existente">Este e-mail já está cadastrado. Use Entrar.</string>
     <string name="msg_senha_incorreta">Senha incorreta.</string>
-    <string name="msg_legenda_vazia">Digite uma legenda para publicar.</string>
-    <string name="msg_feed_carregando">Carregando publicações…</string>
 </resources>
