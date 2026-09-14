@@ -24,10 +24,6 @@
         </provider>
         <activity android:name=".SelfActivity" android:exported="false" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".ComentariosActivity"
             android:exported="false"
             android:label="@string/titulo_comentarios"/>

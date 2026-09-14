@@ -35,10 +35,6 @@ public class TikTokApp extends Application {
     }
 
     public void enviar(String turma) {
-        if (!UsuarioPrefs.estaLogado(this)) {
-            atualizar(getString(R.string.msg_login_obrigatorio), false);
-            return;
-        }
         if (foto == null || enviando || !turma.matches("[D-I]")) return;
         enviando = true;
         url = "";

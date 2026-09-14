@@ -77,16 +77,4 @@
     <string name="msg_login_para_comentar">Entre na tela inicial para escrever um comentário.</string>
     <string name="msg_boas_vindas">Olá, %1$s!</string>
     <string name="msg_logout">Você voltou ao modo visitante.</string>
-    <!-- Tela de login local -->
-    <string name="login_subtitulo">Entre para publicar fotos e interagir com o feed.</string>
-    <string name="login_sessao_atual">Conectado atualmente como %1$s. Entre com outra conta para trocar.</string>
-    <string name="hint_email">E-mail</string>
-    <string name="hint_senha">Senha</string>
-    <string name="acao_cadastrar">Criar conta</string>
-    <string name="acao_continuar_visitante">Continuar como visitante</string>
-    <string name="msg_email_invalido">Informe um e-mail válido.</string>
-    <string name="msg_senha_curta">A senha deve ter pelo menos 6 caracteres.</string>
-    <string name="msg_conta_inexistente">Conta não encontrada. Use Criar conta.</string>
-    <string name="msg_conta_existente">Este e-mail já está cadastrado. Use Entrar.</string>
-    <string name="msg_senha_incorreta">Senha incorreta.</string>
 </resources>

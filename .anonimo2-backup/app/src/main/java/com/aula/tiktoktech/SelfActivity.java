@@ -59,11 +59,6 @@ public class SelfActivity extends AppCompatActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!UsuarioPrefs.estaLogado(this)) {
-            Toast.makeText(this, R.string.msg_login_obrigatorio, Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
         app = (TikTokApp) getApplication();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_self);

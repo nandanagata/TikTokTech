@@ -21,6 +21,7 @@
         <item name="android:statusBarColor">@color/marinho</item>
         <item name="android:navigationBarColor">@color/fundo</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="Theme.TikTokTech" parent="Base.Theme.TikTokTech" />
@@ -36,6 +37,7 @@
     <style name="Widget.TikTokTech.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@color/marinho</item>
         <item name="titleTextAppearance">@style/Texto.Titulo</item>
+        <item name="subtitleTextColor">@color/white</item>
         <item name="navigationIconTint">@color/white</item>
     </style>
 
