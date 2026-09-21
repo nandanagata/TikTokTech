@@ -13,14 +13,11 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ComentariosActivity extends AppCompatActivity {
 
@@ -146,26 +143,8 @@ public class ComentariosActivity extends AppCompatActivity {
             return;
         }
         if (comentario.getId() == null || !(campo.equals("likes") || campo.equals("dislikes"))) return;
-        DocumentReference comentarioRef = banco.collection("POSTS_2G").document(postId)
-                .collection("comentarios").document(comentario.getId());
-        DocumentReference votoRef = comentarioRef.collection("votos").document(UsuarioPrefs.obter(this));
-        banco.runTransaction(transacao -> {
-                    DocumentSnapshot anterior = transacao.get(votoRef);
-                    String tipoAnterior = anterior.exists() ? anterior.getString("tipo") : null;
-                    if (campo.equals(tipoAnterior)) {
-                        transacao.update(comentarioRef, campo, FieldValue.increment(-1));
-                        transacao.delete(votoRef);
-                    } else {
-                        if ("likes".equals(tipoAnterior) || "dislikes".equals(tipoAnterior)) {
-                            transacao.update(comentarioRef, tipoAnterior, FieldValue.increment(-1));
-                        }
-                        transacao.update(comentarioRef, campo, FieldValue.increment(1));
-                        Map<String, Object> dados = new HashMap<>();
-                        dados.put("tipo", campo);
-                        transacao.set(votoRef, dados);
-                    }
-                    return null;
-                })
+        banco.collection("POSTS_2G").document(postId).collection("comentarios")
+                .document(comentario.getId()).update(campo, FieldValue.increment(1))
                 .addOnFailureListener(erro -> Toast.makeText(this,
                         getString(R.string.msg_erro_voto, erro.getMessage()), Toast.LENGTH_LONG).show());
     }

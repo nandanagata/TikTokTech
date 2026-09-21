@@ -18,14 +18,10 @@ import com.aula.tiktoktech.model.Post;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements PostAdapter.Acoes {
     public static final String EXTRA_POST_ID = "postId";
@@ -114,28 +110,9 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.Acoes
             return;
         }
         if (post.getId() == null || !(campo.equals("likes") || campo.equals("dislikes"))) return;
-        DocumentReference postRef = banco.collection("POSTS_2G").document(post.getId());
-        registrarVoto(postRef, postRef.collection("votos").document(UsuarioPrefs.obter(this)), campo);
-    }
-
-    private void registrarVoto(DocumentReference alvo, DocumentReference voto, String campo) {
-        banco.runTransaction(transacao -> {
-                    DocumentSnapshot anterior = transacao.get(voto);
-                    String tipoAnterior = anterior.exists() ? anterior.getString("tipo") : null;
-                    if (campo.equals(tipoAnterior)) {
-                        transacao.update(alvo, campo, FieldValue.increment(-1));
-                        transacao.delete(voto);
-                    } else {
-                        if ("likes".equals(tipoAnterior) || "dislikes".equals(tipoAnterior)) {
-                            transacao.update(alvo, tipoAnterior, FieldValue.increment(-1));
-                        }
-                        transacao.update(alvo, campo, FieldValue.increment(1));
-                        Map<String, Object> dados = new HashMap<>();
-                        dados.put("tipo", campo);
-                        transacao.set(voto, dados);
-                    }
-                    return null;
-                })
+        // Incremento atômico evita que votos simultâneos sobrescrevam um ao outro.
+        banco.collection("POSTS_2G").document(post.getId())
+                .update(campo, FieldValue.increment(1))
                 .addOnFailureListener(erro -> Toast.makeText(this,
                         getString(R.string.msg_erro_voto, erro.getMessage()), Toast.LENGTH_LONG).show());
     }

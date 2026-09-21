@@ -20,26 +20,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
+        <!-- A imagem é carregada pelo Glide a partir da URL do Cloudinary -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgFoto"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgFoto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/fundo_imagem"
-                android:contentDescription="@string/desc_foto_publicacao"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/Imagem.TopoArredondado"
-                tools:src="@drawable/fundo_imagem" />
-
-            <VideoView
-                android:id="@+id/videoPost"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-        </FrameLayout>
+            android:layout_height="300dp"
+            android:background="@drawable/fundo_imagem"
+            android:contentDescription="@string/desc_foto_publicacao"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/Imagem.TopoArredondado"
+            tools:src="@drawable/fundo_imagem" />
 
         <TextView
             android:id="@+id/txtAutorPost"

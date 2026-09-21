@@ -6,8 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.MediaController;
-import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.aula.tiktoktech.model.Post;
@@ -49,26 +47,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.likes.setText(String.valueOf(post.getLikes()));
         holder.dislikes.setText(String.valueOf(post.getDislikes()));
         holder.comentarios.setText(String.valueOf(post.getComentarios()));
-        if ("video".equals(post.getTipo())) {
-            holder.foto.setVisibility(View.GONE);
-            holder.video.setVisibility(View.VISIBLE);
-            holder.video.setVideoURI(android.net.Uri.parse(post.getUrl()));
-            holder.video.setMediaController(new MediaController(holder.itemView.getContext()));
-            holder.video.setOnPreparedListener(player -> {
-                player.setLooping(true);
-                player.start();
-            });
-        } else {
-            holder.video.stopPlayback();
-            holder.video.setVisibility(View.GONE);
-            holder.foto.setVisibility(View.VISIBLE);
-            Glide.with(holder.itemView)
-                    .load(post.getUrl())
-                    .placeholder(R.drawable.ic_imagem_vazia)
-                    .error(R.drawable.ic_imagem_vazia)
-                    .centerCrop()
-                    .into(holder.foto);
-        }
+        Glide.with(holder.itemView)
+                .load(post.getUrl())
+                .placeholder(R.drawable.ic_imagem_vazia)
+                .error(R.drawable.ic_imagem_vazia)
+                .centerCrop()
+                .into(holder.foto);
         holder.like.setOnClickListener(v -> acoes.votar(post, "likes"));
         holder.dislike.setOnClickListener(v -> acoes.votar(post, "dislikes"));
         holder.comentar.setOnClickListener(v -> acoes.comentar(post));
@@ -78,7 +62,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
         final ImageView foto;
-        final VideoView video;
         final TextView descricao;
         final TextView autor;
         final TextView likes;
@@ -91,7 +74,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         PostViewHolder(@NonNull View itemView) {
             super(itemView);
             foto = itemView.findViewById(R.id.imgFoto);
-            video = itemView.findViewById(R.id.videoPost);
             descricao = itemView.findViewById(R.id.txtDescricao);
             autor = itemView.findViewById(R.id.txtAutorPost);
             likes = itemView.findViewById(R.id.txtLikes);

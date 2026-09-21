@@ -19,25 +19,14 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/imgFoto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <ImageView
-            android:id="@+id/imgFoto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#EEEEEE"
-            android:contentDescription="@string/desc_foto"
-            android:scaleType="fitCenter" />
-
-        <VideoView
-            android:id="@+id/videoPreview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-    </FrameLayout>
+        android:layout_weight="1"
+        android:background="#EEEEEE"
+        android:contentDescription="@string/desc_foto"
+        android:scaleType="fitCenter" />
 
     <Button
         android:id="@+id/btnTirarFoto"
@@ -45,12 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/btn_tirar_foto" />
-
-    <Button
-        android:id="@+id/btnGravarVideo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_gravar_video" />
 
     <Button
         android:id="@+id/btnGaleria"

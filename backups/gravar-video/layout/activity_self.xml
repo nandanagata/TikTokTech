@@ -47,12 +47,6 @@
         android:text="@string/btn_tirar_foto" />
 
     <Button
-        android:id="@+id/btnGravarVideo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_gravar_video" />
-
-    <Button
         android:id="@+id/btnGaleria"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

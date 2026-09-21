@@ -33,12 +33,10 @@ public class SelfActivity extends AppCompatActivity {
     // Componentes de tela, como no projeto myself.
     private Uri fotoUri;
     private Uri cameraUri;
-    private Uri videoUri;
     private Uri previewUri;
     private ImageView imgFoto;
     private VideoView videoPreview;
     private Button btnTirarFoto;
-    private Button btnGravarVideo;
     private Button btnGaleria;
     private Button btnEnviar;
     private ProgressBar progress;
@@ -49,12 +47,6 @@ public class SelfActivity extends AppCompatActivity {
     private final ActivityResultLauncher<Uri> cameraLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicture(), tirouFoto -> {
                 if (tirouFoto && cameraUri != null) selecionarMidia(cameraUri);
-                else Toast.makeText(this, R.string.status_foto_cancelada, Toast.LENGTH_SHORT).show();
-            });
-
-    private final ActivityResultLauncher<Uri> videoLauncher =
-            registerForActivityResult(new ActivityResultContracts.CaptureVideo(), gravouVideo -> {
-                if (gravouVideo && videoUri != null) selecionarVideo(videoUri);
                 else Toast.makeText(this, R.string.status_foto_cancelada, Toast.LENGTH_SHORT).show();
             });
 
@@ -89,14 +81,12 @@ public class SelfActivity extends AppCompatActivity {
         imgFoto = findViewById(R.id.imgFoto);
         videoPreview = findViewById(R.id.videoPreview);
         btnTirarFoto = findViewById(R.id.btnTirarFoto);
-        btnGravarVideo = findViewById(R.id.btnGravarVideo);
         btnGaleria = findViewById(R.id.btnGaleria);
         btnEnviar = findViewById(R.id.btnEnviar);
         progress = findViewById(R.id.progress);
         txtStatus = findViewById(R.id.txtStatus);
         edtLegenda = findViewById(R.id.edtLegenda);
         btnTirarFoto.setOnClickListener(v -> tirarFoto());
-        btnGravarVideo.setOnClickListener(v -> gravarVideo());
         btnGaleria.setOnClickListener(v -> abrirGaleria());
         btnEnviar.setOnClickListener(v -> salvarNuvem());
 
@@ -167,21 +157,6 @@ public class SelfActivity extends AppCompatActivity {
         }
     }
 
-    private void gravarVideo() {
-        File pasta = getExternalFilesDir(null);
-        if (pasta == null) {
-            txtStatus.setText("Armazenamento indisponível. Tente usar a galeria.");
-            return;
-        }
-        File arquivo = new File(pasta, "video_" + System.currentTimeMillis() + ".mp4");
-        try {
-            videoUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", arquivo);
-            videoLauncher.launch(videoUri);
-        } catch (RuntimeException erro) {
-            txtStatus.setText("Não foi possível abrir a câmera: " + erro.getMessage());
-        }
-    }
-
     private void selecionarMidia(Uri uri) {
         fotoUri = uri;
         app.foto = uri;
@@ -190,16 +165,6 @@ public class SelfActivity extends AppCompatActivity {
         app.url = "";
         app.publicado = false;
         app.status = getString(R.string.status_foto_ok);
-        atualizarTela();
-    }
-
-    private void selecionarVideo(Uri uri) {
-        fotoUri = uri;
-        app.foto = uri;
-        app.tipoMidia = "video";
-        app.url = "";
-        app.publicado = false;
-        app.status = "Vídeo gravado. Toque em enviar.";
         atualizarTela();
     }
 
@@ -235,7 +200,6 @@ public class SelfActivity extends AppCompatActivity {
         }
         progress.setVisibility(app.enviando ? View.VISIBLE : View.GONE);
         btnTirarFoto.setEnabled(!app.enviando);
-        btnGravarVideo.setEnabled(!app.enviando);
         btnGaleria.setEnabled(!app.enviando);
         btnEnviar.setEnabled(fotoUri != null && !app.enviando && !app.publicado);
         edtLegenda.setEnabled(!app.enviando && !app.publicado);

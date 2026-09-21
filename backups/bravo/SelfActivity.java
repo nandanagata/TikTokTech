@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
-import android.widget.MediaController;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -33,12 +31,9 @@ public class SelfActivity extends AppCompatActivity {
     // Componentes de tela, como no projeto myself.
     private Uri fotoUri;
     private Uri cameraUri;
-    private Uri videoUri;
     private Uri previewUri;
     private ImageView imgFoto;
-    private VideoView videoPreview;
     private Button btnTirarFoto;
-    private Button btnGravarVideo;
     private Button btnGaleria;
     private Button btnEnviar;
     private ProgressBar progress;
@@ -48,13 +43,7 @@ public class SelfActivity extends AppCompatActivity {
 
     private final ActivityResultLauncher<Uri> cameraLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicture(), tirouFoto -> {
-                if (tirouFoto && cameraUri != null) selecionarMidia(cameraUri);
-                else Toast.makeText(this, R.string.status_foto_cancelada, Toast.LENGTH_SHORT).show();
-            });
-
-    private final ActivityResultLauncher<Uri> videoLauncher =
-            registerForActivityResult(new ActivityResultContracts.CaptureVideo(), gravouVideo -> {
-                if (gravouVideo && videoUri != null) selecionarVideo(videoUri);
+                if (tirouFoto && cameraUri != null) selecionarFoto(cameraUri);
                 else Toast.makeText(this, R.string.status_foto_cancelada, Toast.LENGTH_SHORT).show();
             });
 
@@ -65,7 +54,7 @@ public class SelfActivity extends AppCompatActivity {
                         public void onActivityResult(ActivityResult o) {
                             if (o.getResultCode() == RESULT_OK && o.getData() != null
                                     && o.getData().getData() != null) {
-                                selecionarMidia(o.getData().getData());
+                                selecionarFoto(o.getData().getData());
                             }
                         }
                     });
@@ -87,16 +76,13 @@ public class SelfActivity extends AppCompatActivity {
             return insets;
         });
         imgFoto = findViewById(R.id.imgFoto);
-        videoPreview = findViewById(R.id.videoPreview);
         btnTirarFoto = findViewById(R.id.btnTirarFoto);
-        btnGravarVideo = findViewById(R.id.btnGravarVideo);
         btnGaleria = findViewById(R.id.btnGaleria);
         btnEnviar = findViewById(R.id.btnEnviar);
         progress = findViewById(R.id.progress);
         txtStatus = findViewById(R.id.txtStatus);
         edtLegenda = findViewById(R.id.edtLegenda);
         btnTirarFoto.setOnClickListener(v -> tirarFoto());
-        btnGravarVideo.setOnClickListener(v -> gravarVideo());
         btnGaleria.setOnClickListener(v -> abrirGaleria());
         btnEnviar.setOnClickListener(v -> salvarNuvem());
 
@@ -126,10 +112,9 @@ public class SelfActivity extends AppCompatActivity {
 
     private void abrirGaleria() {
         // Abre um aplicativo de galeria, como no exemplo myself.
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
         try { galeriaAbrir.launch(intent); }
         catch (android.content.ActivityNotFoundException erro) {
             Toast.makeText(this, "Nenhuma galeria disponível neste aparelho.", Toast.LENGTH_LONG).show();
@@ -167,57 +152,19 @@ public class SelfActivity extends AppCompatActivity {
         }
     }
 
-    private void gravarVideo() {
-        File pasta = getExternalFilesDir(null);
-        if (pasta == null) {
-            txtStatus.setText("Armazenamento indisponível. Tente usar a galeria.");
-            return;
-        }
-        File arquivo = new File(pasta, "video_" + System.currentTimeMillis() + ".mp4");
-        try {
-            videoUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", arquivo);
-            videoLauncher.launch(videoUri);
-        } catch (RuntimeException erro) {
-            txtStatus.setText("Não foi possível abrir a câmera: " + erro.getMessage());
-        }
-    }
-
-    private void selecionarMidia(Uri uri) {
+    private void selecionarFoto(Uri uri) {
         fotoUri = uri;
         app.foto = uri;
-        String mimeType = getContentResolver().getType(uri);
-        app.tipoMidia = mimeType != null && mimeType.startsWith("video/") ? "video" : "imagem";
         app.url = "";
         app.publicado = false;
         app.status = getString(R.string.status_foto_ok);
         atualizarTela();
     }
 
-    private void selecionarVideo(Uri uri) {
-        fotoUri = uri;
-        app.foto = uri;
-        app.tipoMidia = "video";
-        app.url = "";
-        app.publicado = false;
-        app.status = "Vídeo gravado. Toque em enviar.";
-        atualizarTela();
-    }
-
     private void atualizarTela() {
         fotoUri = app.foto;
         if (fotoUri != null && !fotoUri.equals(previewUri)) {
-            if ("video".equals(app.tipoMidia)) {
-                imgFoto.setVisibility(View.GONE);
-                videoPreview.setVisibility(View.VISIBLE);
-                videoPreview.setVideoURI(fotoUri);
-                videoPreview.setMediaController(new MediaController(this));
-                videoPreview.seekTo(1);
-                previewUri = fotoUri;
-            } else {
-                videoPreview.stopPlayback();
-                videoPreview.setVisibility(View.GONE);
-                imgFoto.setVisibility(View.VISIBLE);
-                try {
+            try {
                 // Reduz somente a prévia para evitar estouro de memória com fotos grandes.
                 imgFoto.setImageDrawable(ImageDecoder.decodeDrawable(
                         ImageDecoder.createSource(getContentResolver(), fotoUri), (decoder, info, source) -> {
@@ -231,11 +178,9 @@ public class SelfActivity extends AppCompatActivity {
                 imgFoto.setImageResource(R.drawable.ic_imagem_vazia);
                 app.status = "Não foi possível ler a imagem. Selecione outra foto.";
             }
-            }
         }
         progress.setVisibility(app.enviando ? View.VISIBLE : View.GONE);
         btnTirarFoto.setEnabled(!app.enviando);
-        btnGravarVideo.setEnabled(!app.enviando);
         btnGaleria.setEnabled(!app.enviando);
         btnEnviar.setEnabled(fotoUri != null && !app.enviando && !app.publicado);
         edtLegenda.setEnabled(!app.enviando && !app.publicado);

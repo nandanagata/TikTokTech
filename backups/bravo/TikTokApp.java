@@ -14,7 +14,6 @@ import java.util.Map;
 /** Inicializa o Cloudinary uma vez e mantém o envio independente da rotação da tela. */
 public class TikTokApp extends Application {
     public Uri foto;
-    public String tipoMidia = "imagem";
     public String url = "";
     public String status = "Selecione uma foto para começar.";
     public boolean enviando;
@@ -55,7 +54,7 @@ public class TikTokApp extends Application {
         try {
             MediaManager.get().upload(foto)
                     .unsigned(getString(R.string.cloudinary_upload_preset))
-                    .option("resource_type", "auto")
+                    .option("resource_type", "image")
                     .option("folder", "tiktoktech_sala" + turma)
                     .callback(new UploadCallback() {
                         @Override public void onStart(String id) { }
@@ -94,7 +93,6 @@ public class TikTokApp extends Application {
         post.put("url", imagemUrl);
         post.put("descricao", descricao.trim());
         post.put("autor", UsuarioPrefs.obter(this));
-        post.put("tipo", tipoMidia);
         post.put("likes", 0L);
         post.put("dislikes", 0L);
         post.put("comentarios", 0L);

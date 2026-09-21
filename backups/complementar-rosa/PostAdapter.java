@@ -54,10 +54,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.video.setVisibility(View.VISIBLE);
             holder.video.setVideoURI(android.net.Uri.parse(post.getUrl()));
             holder.video.setMediaController(new MediaController(holder.itemView.getContext()));
-            holder.video.setOnPreparedListener(player -> {
-                player.setLooping(true);
-                player.start();
-            });
+            holder.video.seekTo(1);
         } else {
             holder.video.stopPlayback();
             holder.video.setVisibility(View.GONE);
