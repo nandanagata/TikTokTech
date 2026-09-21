@@ -57,7 +57,7 @@ public class ComentariosActivity extends AppCompatActivity {
 
         RecyclerView recyclerComentarios = findViewById(R.id.recyclerComentarios);
         recyclerComentarios.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ComentarioAdapter(this::votarComentario);
+        adapter = new ComentarioAdapter();
         recyclerComentarios.setAdapter(adapter);
 
         atualizarPainelUsuario();
@@ -98,7 +98,7 @@ public class ComentariosActivity extends AppCompatActivity {
     }
 
     private void ouvirComentarios() {
-        listenerComentarios = banco.collection("POSTS_2G")
+        listenerComentarios = banco.collection("posts")
                 .document(postId)
                 .collection("comentarios")
                 .orderBy("criadoEm", Query.Direction.ASCENDING)
@@ -125,7 +125,7 @@ public class ComentariosActivity extends AppCompatActivity {
         }
 
         btnEnviar.setEnabled(false);
-        DocumentReference post = banco.collection("POSTS_2G").document(postId);
+        DocumentReference post = banco.collection("posts").document(postId);
         WriteBatch lote = banco.batch();
         lote.set(post.collection("comentarios").document(),
                 new Comentario(UsuarioPrefs.obter(this), texto));
@@ -135,17 +135,5 @@ public class ComentariosActivity extends AppCompatActivity {
                 .addOnFailureListener(erro -> Toast.makeText(this,
                         R.string.msg_erro_comentario, Toast.LENGTH_LONG).show())
                 .addOnCompleteListener(tarefa -> btnEnviar.setEnabled(true));
-    }
-
-    private void votarComentario(Comentario comentario, String campo) {
-        if (!UsuarioPrefs.estaLogado(this)) {
-            Toast.makeText(this, R.string.msg_login_obrigatorio, Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (comentario.getId() == null || !(campo.equals("likes") || campo.equals("dislikes"))) return;
-        banco.collection("POSTS_2G").document(postId).collection("comentarios")
-                .document(comentario.getId()).update(campo, FieldValue.increment(1))
-                .addOnFailureListener(erro -> Toast.makeText(this,
-                        getString(R.string.msg_erro_voto, erro.getMessage()), Toast.LENGTH_LONG).show());
     }
 }

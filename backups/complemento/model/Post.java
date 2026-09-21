@@ -8,7 +8,6 @@ public class Post {
     private String id;
     private String url;
     private String descricao;
-    private String autor;
     private long likes;
     private long dislikes;
     private long comentarios;
@@ -31,8 +30,6 @@ public class Post {
     public void setUrl(String url) { this.url = url; }
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
-    public String getAutor() { return autor; }
-    public void setAutor(String autor) { this.autor = autor; }
     public long getLikes() { return likes; }
     public void setLikes(long likes) { this.likes = likes; }
     public long getDislikes() { return dislikes; }

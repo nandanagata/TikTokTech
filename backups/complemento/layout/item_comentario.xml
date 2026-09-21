@@ -77,44 +77,6 @@
                 android:textSize="15sp"
                 tools:text="Ficou muito boa essa foto do laboratório." />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/btnLikeComentario"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/acao_like"
-                    android:padding="9dp"
-                    android:src="@drawable/ic_coracao_contorno" />
-
-                <TextView
-                    android:id="@+id/txtLikesComentario"
-                    style="@style/Contador"
-                    android:text="0" />
-
-                <ImageButton
-                    android:id="@+id/btnDislikeComentario"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/acao_dislike"
-                    android:padding="9dp"
-                    android:src="@drawable/ic_polegar_baixo" />
-
-                <TextView
-                    android:id="@+id/txtDislikesComentario"
-                    style="@style/Contador"
-                    android:text="0" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
     </LinearLayout>

@@ -41,8 +41,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     @Override public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post post = posts.get(position);
-        holder.autor.setText(post.getAutor() == null || post.getAutor().isEmpty()
-                ? holder.itemView.getContext().getString(R.string.autor_anonimo) : post.getAutor());
         holder.descricao.setText(post.getDescricao());
         holder.likes.setText(String.valueOf(post.getLikes()));
         holder.dislikes.setText(String.valueOf(post.getDislikes()));
@@ -63,7 +61,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     static class PostViewHolder extends RecyclerView.ViewHolder {
         final ImageView foto;
         final TextView descricao;
-        final TextView autor;
         final TextView likes;
         final TextView dislikes;
         final TextView comentarios;
@@ -75,7 +72,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             super(itemView);
             foto = itemView.findViewById(R.id.imgFoto);
             descricao = itemView.findViewById(R.id.txtDescricao);
-            autor = itemView.findViewById(R.id.txtAutorPost);
             likes = itemView.findViewById(R.id.txtLikes);
             dislikes = itemView.findViewById(R.id.txtDislikes);
             comentarios = itemView.findViewById(R.id.txtComentarios);

@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.Acoes
     /** Listener contínuo: qualquer alteração no Firestore atualiza a lista aberta. */
     private void ouvirFeed() {
         progress.setVisibility(View.VISIBLE);
-        feedListener = banco.collection("POSTS_2G")
+        feedListener = banco.collection("posts")
                 .orderBy("criadoEm", Query.Direction.DESCENDING)
                 .addSnapshotListener((snapshot, erro) -> {
                     progress.setVisibility(View.GONE);
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.Acoes
         }
         if (post.getId() == null || !(campo.equals("likes") || campo.equals("dislikes"))) return;
         // Incremento atômico evita que votos simultâneos sobrescrevam um ao outro.
-        banco.collection("POSTS_2G").document(post.getId())
+        banco.collection("posts").document(post.getId())
                 .update(campo, FieldValue.increment(1))
                 .addOnFailureListener(erro -> Toast.makeText(this,
                         getString(R.string.msg_erro_voto, erro.getMessage()), Toast.LENGTH_LONG).show());

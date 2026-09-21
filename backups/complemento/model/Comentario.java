@@ -1,17 +1,11 @@
 package com.aula.tiktoktech.model;
 
-import com.google.firebase.firestore.DocumentId;
-
 import java.util.Date;
 
 public class Comentario {
-    @DocumentId
-    private String id;
     private String autor;
     private String texto;
     private Date criadoEm;
-    private long likes;
-    private long dislikes;
 
     /** Construtor vazio exigido pelo Firestore. */
     public Comentario() {
@@ -21,12 +15,7 @@ public class Comentario {
         this.autor = autor;
         this.texto = texto;
         this.criadoEm = new Date();
-        this.likes = 0;
-        this.dislikes = 0;
     }
-
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
 
     public String getAutor() {
         return autor;
@@ -51,10 +40,5 @@ public class Comentario {
     public void setCriadoEm(Date criadoEm) {
         this.criadoEm = criadoEm;
     }
-
-    public long getLikes() { return likes; }
-    public void setLikes(long likes) { this.likes = likes; }
-    public long getDislikes() { return dislikes; }
-    public void setDislikes(long dislikes) { this.dislikes = dislikes; }
 
 }

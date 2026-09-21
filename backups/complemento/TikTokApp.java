@@ -92,12 +92,11 @@ public class TikTokApp extends Application {
         Map<String, Object> post = new HashMap<>();
         post.put("url", imagemUrl);
         post.put("descricao", descricao.trim());
-        post.put("autor", UsuarioPrefs.obter(this));
         post.put("likes", 0L);
         post.put("dislikes", 0L);
         post.put("comentarios", 0L);
         post.put("criadoEm", System.currentTimeMillis());
-        FirebaseFirestore.getInstance().collection("POSTS_2G").add(post)
+        FirebaseFirestore.getInstance().collection("posts").add(post)
                 .addOnSuccessListener(documento -> main.post(() -> {
                     publicado = true;
                     url = imagemUrl;
